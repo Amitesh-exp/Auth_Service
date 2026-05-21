@@ -6,7 +6,7 @@ class UserRepository {
             const user = await User.create(data);
             return user;
         } catch (error) {
-            console.error('Something went wrong on repository layer:');
+            console.error('Something went wrong on repository layer');
             throw error;
         }   
     }
@@ -20,7 +20,7 @@ class UserRepository {
             });
             return true;
         } catch (error) {
-            console.error('Something went wrong on repository layer:');
+            console.error('Something went wrong on repository layer');
             throw error;
         }
     }
@@ -32,7 +32,21 @@ class UserRepository {
             });
             return user;
         } catch (error) {
-            console.error('Something went wrong on repository layer:');
+            console.error('Something went wrong on repository layer');
+            throw error;
+        }
+    }
+
+    async getByEmail (email) {
+        try {
+            const user = await User.findOne({
+                where: {
+                    email: email
+                }
+            });
+            return user;
+        } catch (error) {
+            console.error('Something went wrong on repository layer');
             throw error;
         }
     }
