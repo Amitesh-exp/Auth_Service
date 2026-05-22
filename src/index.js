@@ -4,7 +4,9 @@ const bodyParser = require('body-parser');
 const { PORT } = require('./config/serverConfig');
 const apiRoutes = require('./routes/index');
 
-// const UserService = require('./services/user-service');
+const db = require('./models/index');
+const {User, Role} = require('./models/index');
+
 
 const app = express();
 
@@ -17,16 +19,10 @@ const prepareAndStartServer = () => {
 
     app.listen(PORT, async () => {
         console.log('Server Started on PORT', PORT);
-
-        // const service = new UserService();
-        // const newToken = service.createToken({ email: 'amitesh@gmail.com', id: 1 });
-        // console.log('New Token:', newToken);
-
-        // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtaXRlc2hAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTc3OTMwNDc3MywiZXhwIjoxNzc5MzA0ODAzfQ.nl6iCbwi4o7h5V7bFSaLUTwPcxgjTryorQbgXfeUYX8'
-        // const response = service.verifyToken(token);
-        // console.log('Token Response:', response);
+        if (process.env.DB_SYNC) {
+            await db.sequelize.sync({ alter: true });
+        }
     });
-
 }
 
 prepareAndStartServer();

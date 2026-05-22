@@ -1,5 +1,6 @@
 const { response } = require('express');
 const UserService = require('../services/user-service');
+const user = require('../models/user');
 
 const userService = new UserService();
 
@@ -65,11 +66,31 @@ const isAuthenticated = async (req, res) => {
             err: error
         });
     }
-}; 
+};
 
+const isAdmin = async (req, res) => {
+    try {
+        const token = await userService.isAdmin(req.body.id);
+        return res.status(200).json({
+            success: true,
+            message: 'Successfully fetched whether the user is admin or not',
+            data: token,
+            err: {}
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Something went wrong',
+            data: {},   
+            success: false,
+            err: error
+        });
+    }
+}; 
 
 module.exports = {
     create,
     signIn,
-    isAuthenticated
+    isAuthenticated,
+    isAdmin
 }
